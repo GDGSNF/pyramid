@@ -182,10 +182,7 @@ class Tweens:
         return self.sorter.sorted()
 
     def __call__(self, handler, registry):
-        if self.explicit:
-            use = self.explicit
-        else:
-            use = self.implicit()
+        use = self.explicit or self.implicit()
         for name, factory in use[::-1]:
             handler = factory(handler, registry)
         return handler

@@ -21,10 +21,7 @@ class ActionConfiguratorMixin:
         info = self.info  # usually a ZCML action (ParserInfo) if self.info
         if not info:
             # Try to provide more accurate info for conflict reports
-            if self._ainfo:
-                info = self._ainfo[0]
-            else:
-                info = ActionInfo(None, 0, '', '')
+            info = self._ainfo[0] if self._ainfo else ActionInfo(None, 0, '')
         return info
 
     def action(

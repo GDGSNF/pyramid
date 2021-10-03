@@ -20,8 +20,7 @@ def caller_path(path, level=2):
 def caller_module(level=2, sys=sys):
     module_globals = sys._getframe(level).f_globals
     module_name = module_globals.get('__name__') or '__main__'
-    module = sys.modules[module_name]
-    return module
+    return sys.modules[module_name]
 
 
 def package_name(pkg_or_module):
@@ -45,7 +44,7 @@ def package_name(pkg_or_module):
 
 
 def package_of(pkg_or_module):
-    """ Return the package of a module or return the package itself """
+    """Return the package of a module or return the package itself"""
     pkg_name = package_name(pkg_or_module)
     __import__(pkg_name)
     return sys.modules[pkg_name]
@@ -104,18 +103,18 @@ class Resolver:
             self.package = package_of(package)
 
     def get_package_name(self):
-        if self.package is CALLER_PACKAGE:
-            package_name = caller_package().__name__
-        else:
-            package_name = self.package.__name__
-        return package_name
+        return (
+            caller_package().__name__
+            if self.package is CALLER_PACKAGE
+            else self.package.__name__
+        )
 
     def get_package(self):
-        if self.package is CALLER_PACKAGE:
-            package = caller_package()
-        else:
-            package = self.package
-        return package
+        return (
+            caller_package()
+            if self.package is CALLER_PACKAGE
+            else self.package
+        )
 
 
 class AssetResolver(Resolver):
@@ -334,16 +333,13 @@ class DottedNameResolver(Resolver):
             return self._zope_dottedname_style(dotted, package)
 
     def _pkg_resources_style(self, value, package):
-        """ package.module:attr style """
-        if value.startswith(('.', ':')):
-            if not package:
-                raise ValueError(
-                    'relative name %r irresolveable without package' % (value,)
-                )
-            if value in ['.', ':']:
-                value = package.__name__
-            else:
-                value = package.__name__ + value
+        """package.module:attr style"""
+        if value.startswith(('.', ':')) and not package:
+            raise ValueError(
+                'relative name %r irresolveable without package' % (value,)
+            )
+        value = package.__name__ if value in ['.', ':'] else package.__name__
+        +value
         # Calling EntryPoint.load with an argument is deprecated.
         # See https://pythonhosted.org/setuptools/history.html#id8
         ep = pkg_resources.EntryPoint.parse('x=%s' % value)
@@ -354,7 +350,7 @@ class DottedNameResolver(Resolver):
             return ep.load(False)  # pragma: NO COVER
 
     def _zope_dottedname_style(self, value, package):
-        """ package.module.attr style """
+        """package.module.attr style"""
         module = getattr(package, '__name__', None)  # package may be None
         if not module:
             module = None

@@ -82,8 +82,7 @@ class TestViewsConfigurationMixin(unittest.TestCase):
     def _getRouteRequestIface(self, config, name):
         from pyramid.interfaces import IRouteRequest
 
-        iface = config.registry.getUtility(IRouteRequest, name)
-        return iface
+        return config.registry.getUtility(IRouteRequest, name)
 
     def _assertRoute(self, config, name, path, num_predicates=0):
         from pyramid.interfaces import IRoutesMapper
@@ -248,7 +247,7 @@ class TestViewsConfigurationMixin(unittest.TestCase):
         from pyramid.renderers import null_renderer
 
         def view(request):
-            """ ABC """
+            """ABC"""
             return 'OK'
 
         def view_wrapper(fn):
@@ -271,7 +270,7 @@ class TestViewsConfigurationMixin(unittest.TestCase):
         from pyramid.renderers import null_renderer
 
         def view(request):
-            """ ABC """
+            """ABC"""
             return 'OK'
 
         def view_wrapper1(fn):
@@ -306,7 +305,7 @@ class TestViewsConfigurationMixin(unittest.TestCase):
         response = Response('OK')
 
         def view(request):
-            """ ABC """
+            """ABC"""
             return response
 
         config = self._makeOne(autocommit=True)
@@ -3790,7 +3789,7 @@ class Test_preserve_view_attrs(unittest.TestCase):
 
     def test_it_different(self):
         class DummyView1:
-            """ 1 """
+            """1"""
 
             __name__ = '1'
             __module__ = '1'
@@ -3808,7 +3807,7 @@ class Test_preserve_view_attrs(unittest.TestCase):
                 """ """
 
         class DummyView2:
-            """ 2 """
+            """2"""
 
             __name__ = '2'
             __module__ = '2'
@@ -4333,11 +4332,7 @@ class DummyAccept:
         self.contains = kw.pop('contains', False)
 
     def acceptable_offers(self, offers):
-        results = []
-        for match in self.matches:
-            if match in offers:
-                results.append((match, 1.0))
-        return results
+        return [(match, 1.0) for match in self.matches if match in offers]
 
 
 class DummyConfig:
@@ -4398,7 +4393,7 @@ def assert_similar_datetime(one, two):
     for attr in ('year', 'month', 'day', 'hour', 'minute'):
         one_attr = getattr(one, attr)
         two_attr = getattr(two, attr)
-        if not one_attr == two_attr:  # pragma: no cover
+        if one_attr != two_attr:  # pragma: no cover
             raise AssertionError('%r != %r in %s' % (one_attr, two_attr, attr))
 
 

@@ -204,7 +204,7 @@ class PredicateList:
         # of MAX_ORDER, meaning that they will be tried very last.
         score = 0
         for bit in weights:
-            score = score | bit
+            score |= bit
         order = (MAX_ORDER - score) // (len(preds) + 1)
 
         return order, preds, phash.hexdigest()
