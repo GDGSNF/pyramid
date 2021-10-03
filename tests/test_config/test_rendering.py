@@ -5,8 +5,7 @@ class TestRenderingConfiguratorMixin(unittest.TestCase):
     def _makeOne(self, *arg, **kw):
         from pyramid.config import Configurator
 
-        config = Configurator(*arg, **kw)
-        return config
+        return Configurator(*arg, **kw)
 
     def test_add_default_renderers(self):
         from pyramid.config.rendering import DEFAULT_RENDERERS

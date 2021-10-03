@@ -13,10 +13,9 @@ def out(*args):  # pragma: no cover
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(
+    return argparse.ArgumentParser(
         description="Show Python distribution versions and locations in use"
     )
-    return parser
 
 
 def main(

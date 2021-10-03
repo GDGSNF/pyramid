@@ -123,5 +123,4 @@ class CyclicDependencyError(Exception):
             dependent = cycle
             dependees = cycles[cycle]
             L.append('%r sorts before %r' % (dependent, dependees))
-        msg = 'Implicit ordering cycle:' + '; '.join(L)
-        return msg
+        return 'Implicit ordering cycle:' + '; '.join(L)

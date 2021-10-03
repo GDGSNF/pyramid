@@ -186,11 +186,9 @@ def _get_response_factory(registry):
     """Obtain a :class: `pyramid.response.Response` using the
     `pyramid.interfaces.IResponseFactory`.
     """
-    response_factory = registry.queryUtility(
+    return registry.queryUtility(
         IResponseFactory, default=lambda r: Response()
     )
-
-    return response_factory
 
 
 def _guess_type(path):

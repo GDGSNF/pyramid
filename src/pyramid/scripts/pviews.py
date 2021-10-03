@@ -203,7 +203,7 @@ class PViewsCommand:
         self.out("%sroute pattern: %s" % (indent, route.pattern))
         self.out("%sroute path: %s" % (indent, route.path))
         self.out("%ssubpath: %s" % (indent, '/'.join(attrs['subpath'])))
-        predicates = ', '.join([p.text() for p in route.predicates])
+        predicates = ', '.join(p.text() for p in route.predicates)
         if predicates != '':
             self.out("%sroute predicates (%s)" % (indent, predicates))
 
@@ -239,7 +239,7 @@ class PViewsCommand:
                 self.out("%srequired permission = %s" % (indent, permission))
             predicates = getattr(view_wrapper, '__predicates__', None)
             if predicates is not None:
-                predicate_text = ', '.join([p.text() for p in predicates])
+                predicate_text = ', '.join(p.text() for p in predicates)
                 self.out("%sview predicates (%s)" % (indent, predicate_text))
 
     def run(self):
@@ -269,11 +269,10 @@ class PViewsCommand:
                 if IMultiView.providedBy(view_wrapper):
                     for dummy, mv_view_wrapper, dummy in view_wrapper.views:
                         self.output_view_info(mv_view_wrapper, level=2)
+        elif view is not None:
+            self.output_view_info(view)
         else:
-            if view is not None:
-                self.output_view_info(view)
-            else:
-                self.out("    Not found.")
+            self.out("    Not found.")
         self.out('')
         env['closer']()
         return 0

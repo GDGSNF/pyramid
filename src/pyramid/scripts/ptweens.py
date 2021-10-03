@@ -99,7 +99,6 @@ class PTweensCommand:
                 self.out('')
                 self.out('Implicit Tween Chain (not used)')
                 self.out('')
-                self.show_chain(tweens.implicit())
             else:
                 self.out(
                     '"pyramid.tweens" config value NOT set '
@@ -108,7 +107,7 @@ class PTweensCommand:
                 self.out('')
                 self.out('Implicit Tween Chain')
                 self.out('')
-                self.show_chain(tweens.implicit())
+            self.show_chain(tweens.implicit())
         return 0
 
 
